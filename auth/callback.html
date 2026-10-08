@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex"><title>Signing you in…</title>
+<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#050b1c;color:#fff;font-family:system-ui,sans-serif;text-align:center;padding:24px}a{color:#fff}</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+</head><body><p id="m">Signing you in…</p>
+<script>
+(async()=>{
+  const safeStore=(()=>{try{const k='__vt';localStorage.setItem(k,k);localStorage.removeItem(k);return localStorage}catch(e){const m={};return{getItem:k=>(k in m?m[k]:null),setItem:(k,v)=>{m[k]=String(v)},removeItem:k=>{delete m[k]}}}})();
+  const db=supabase.createClient('https://jwrzitpiqjgmpbncuxjj.supabase.co','sb_publishable_ImaJ7mpM7oAaM1X2Ct9ppQ_BB0NExRo',
+    {auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'pkce',storage:safeStore,storageKey:'vtower-auth'}});
+  try{
+    const {data,error}=await db.auth.getSession();   // processes the ?code= returned by Google/Supabase
+    if(error)throw error;
+    if(data.session){location.replace('/');return}
+    throw new Error('No session');
+  }catch(e){
+    
+    const t=document.getElementById('m');t.textContent='We could not complete the sign-in. ';
+    const a=document.createElement('a');a.href='/';a.textContent='Back to the site';t.appendChild(a);
+  }
+})();
+</script></body></html>
